@@ -1,0 +1,57 @@
+services:
+ api:
+  build:
+   context: .
+   dockerfile: dockerfile
+  image: nhana213/boiler_express:0.0.1
+  environment:
+   NODE_ENV: 'production'
+  ports:
+   - ${PORT:-8000}:${PORT:-8000}
+  depends_on:
+   - postgres
+   - redis
+   - rabbitmq
+  volumes:
+   - .:/usr/apps/boilerNodeExpress
+
+ postgres:
+  image: postgres:latest
+  container_name: app_postgres
+  restart: always
+  environment:
+   POSTGRES_PASSWORD: 'root'
+   POSTGRES_HOST: 'localhost'
+   POSTGRES_USER: 'root'
+   POSTGRES_DB: 'clean_architecture'
+  ports:
+   - '5433:5432'
+  volumes:
+   - db:/var/lib/postgressql/data
+  healthcheck:
+   test: ['CMD-SHELL', 'pg_isready -U root']
+   interval: 10s
+   timeout: 5s
+   retries: 5
+ rabbitmq:
+  image: rabbitmq:3-management
+  container_name: app-rabbitmq
+  restart: always
+  ports:
+   - '5672:5672'
+   - '15672:15672'
+ redis:
+  image: redis:latest
+  container_name: app_redis
+  restart: always
+  ports:
+   - '6379:6379'
+  volumes:
+   - redis_data:/var/lib/redis/data
+volumes:
+ db:
+  driver: local
+ redis_data:
+  driver: local
+ rabbit_data:
+  driver: local
