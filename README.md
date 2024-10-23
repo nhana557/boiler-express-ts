@@ -19,39 +19,46 @@ Install the dependencies:
 npm install
 ```
 
-Set the environment variables:
+Set the configuration sh:
 
 ```bash
-cp .env.example .env
-
-
+chmod +x manage.sh
 ```
 
 ## Commands
 
-Running locally:
+Migration:
 
 ```bash
-make server-dev
-```
-
-Running in production:
-
-```bash
-make start
+# migration up
+    make migrate
+# migration down
+    make migrate-down
 ```
 
 Docker:
 
 ```bash
 # run docker container in development mode
-make dependencies-up
+    make dependencies-up
 
 # stop container in development mode
-make dependencies-down
+    make dependencies-down
 
 # run docker container in production mode
-make start
+    make start
+```
+
+Running locally:
+
+```bash
+    make server-dev
+```
+
+Running in production:
+
+```bash
+    make start
 ```
 
 ## Environment Variables
